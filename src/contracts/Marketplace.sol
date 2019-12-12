@@ -5,14 +5,13 @@ contract Marketplace {
     uint public productCount = 0;
     mapping(uint => Product) public products;
 
-    struct Product{
+    struct Product {
         uint id;
         string name;
         uint price;
         address payable owner;
         bool purchased;
     }
-
 
     event ProductCreated(
         uint id,
@@ -23,12 +22,12 @@ contract Marketplace {
     );
 
     event ProductPurchased(
-    uint id,
-    string name,
-    uint price,
-    address payable owner,
-    bool purchased
-);
+        uint id,
+        string name,
+        uint price,
+        address payable owner,
+        bool purchased
+    );
 
     constructor() public {
         name = "Marketplace";
@@ -37,12 +36,12 @@ contract Marketplace {
     function createProduct(string memory _name, uint _price) public {
         require(bytes(_name).length > 0);
         require(_price > 0);
-        productCount++;
+        productCount ++;
         products[productCount] = Product(productCount, _name, _price, msg.sender, false);
         emit ProductCreated(productCount, _name, _price, msg.sender, false);
     }
 
-    function purchaseProduct(uint _id) public payable{
+    function purchaseProduct(uint _id) public payable {
         Product memory _product = products[_id];
         address payable _seller = _product.owner;
         require(_product.id > 0 && _product.id <= productCount);
@@ -54,8 +53,5 @@ contract Marketplace {
         products[_id] = _product;
         address(_seller).transfer(msg.value);
         emit ProductPurchased(productCount, _product.name, _product.price, msg.sender, true);
-
-
     }
-
 }
