@@ -1,25 +1,49 @@
 import React, { Component } from 'react';
+import Select from 'react-select';
+import pokemon from 'pokemon'
 
 class Main extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: ''
+    };
+    this.handleChange = this.handleChange.bind(this)
+  }
+
+  handleChange(event) {
+    this.setState({ value: event.label.toString() });
+  };
 
   render() {
     return (
-      <div id="content">
+      <div>
         <h1>Add Pokemon</h1>
         <form onSubmit={(event) => {
           event.preventDefault()
-          const name = this.productName.value
+          const name = this.state.value
           const price = window.web3.utils.toWei(this.productPrice.value.toString(), 'Ether')
           this.props.createProduct(name, price)
         }}>
           <div className="form-group mr-sm-2">
-            <input
+            <Select
               id="productName"
-              type="text"
-              ref={(input) => { this.productName = input }}
-              className="form-control"
-              placeholder="Pokemon Name"
-              required />
+              value={this.state.value}
+              onChange={this.handleChange}
+              options={
+                pokemon.all().map((guest, index) => {
+                  return {
+                    label: guest,
+                    value: guest,
+                    key: index
+                  }
+                })
+              }
+              required
+            />
+
+
+
           </div>
           <div className="form-group mr-sm-2">
             <input
