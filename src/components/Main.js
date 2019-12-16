@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Select from 'react-select';
 import pokemon from 'pokemon'
+import Pokemon from 'pokemon-images';
 
 class Main extends Component {
   constructor(props) {
@@ -62,6 +63,7 @@ class Main extends Component {
           <thead>
             <tr>
               <th scope="col">#</th>
+              <th scope="col">Image</th>
               <th scope="col">Name</th>
               <th scope="col">Price</th>
               <th scope="col">Owner</th>
@@ -73,6 +75,7 @@ class Main extends Component {
               return (
                 <tr key={key}>
                   <th scope="row">{product.id.toString()}</th>
+                  <td><img src={Pokemon.getSprite(product.name.toString().toLowerCase())}></img></td>
                   <td>{product.name}</td>
                   <td>{window.web3.utils.fromWei(product.price.toString(), 'Ether')} Eth</td>
                   <td>{product.owner}</td>
