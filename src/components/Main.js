@@ -13,7 +13,8 @@ class Main extends Component {
   }
 
   handleChange(event) {
-    this.setState({ value: event.label.toString() });
+    console.log(event.label)
+    this.setState({ value: event.value.toString() });
   };
 
   render() {
@@ -32,10 +33,21 @@ class Main extends Component {
               value={this.state.value}
               onChange={this.handleChange}
               options={
-                pokemon.all().map((guest, index) => {
+                pokemon.all().slice(0, 151).map((guest, index) => {
+                  let val = guest.toString()
+
+                  if(val === "Nidoran♂" ){
+                    val = "Nidoran-f"
+                  }
+                  if(val === "Nidoran♀"){
+                    val = "Nidoran-m"
+                  }
+                  if(val === "Farfetch’d"){
+                    val = "Farfetchd"
+                  }
                   return {
                     label: guest,
-                    value: guest,
+                    value: val,
                     key: index
                   }
                 })
@@ -72,11 +84,21 @@ class Main extends Component {
           </thead>
           <tbody id="productList">
             {this.props.products.map((product, key) => {
+              var pokemonName = product.name
+              if(product.name.toString() === "Nidoran-m"){
+                pokemonName = "Nidoran♀"
+              }
+              if(product.name.toString() === "Nidoran-f"){
+                pokemonName = "Nidoran♂"
+              }
+              if(product.name.toString() === "Farfetchd"){
+                pokemonName= "Farfetch’d"
+              }
               return (
                 <tr key={key}>
                   <th scope="row">{product.id.toString()}</th>
-                  <td><img src={Pokemon.getSprite(product.name.toString().toLowerCase())}></img></td>
-                  <td>{product.name}</td>
+                  <td><img alt={product.name} src={Pokemon.getSprite(product.name.toString().toLowerCase())}></img></td>
+                  <td>{pokemonName}</td>
                   <td>{window.web3.utils.fromWei(product.price.toString(), 'Ether')} Eth</td>
                   <td>{product.owner}</td>
                   <td>
